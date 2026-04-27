@@ -1,0 +1,159 @@
+{% extends "base.html" %}
+
+{% block title %}Add Book{% endblock %}
+
+{% block extra_css %}
+<style>
+    .add-book-page {
+        max-width: 700px;
+        margin: 0 auto;
+        padding: 30px;
+    }
+
+    .add-book-card {
+        background: white;
+        border-radius: 20px;
+        padding: 40px;
+        box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+    }
+
+    .add-book-card h2 {
+        color: #1a365d;
+        text-align: center;
+        margin-bottom: 30px;
+        font-size: 1.8rem;
+    }
+
+    .form-group {
+        margin-bottom: 20px;
+    }
+
+    .form-group label {
+        display: block;
+        margin-bottom: 8px;
+        color: #2d3748;
+        font-weight: 500;
+    }
+
+    .form-group input,
+    .form-group textarea,
+    .form-group select {
+        width: 100%;
+        padding: 14px;
+        border: 2px solid #e2e8f0;
+        border-radius: 10px;
+        font-size: 1rem;
+    }
+
+    .form-group input:focus,
+    .form-group textarea:focus,
+    .form-group select:focus {
+        outline: none;
+        border-color: #2c5282;
+        box-shadow: 0 0 0 3px rgba(44, 82, 130, 0.1);
+    }
+
+    .form-group textarea {
+        min-height: 100px;
+        resize: vertical;
+    }
+
+    .form-row {
+        display: flex;
+        gap: 15px;
+    }
+
+    .form-row .form-group {
+        flex: 1;
+    }
+
+    .btn-submit {
+        width: 100%;
+        padding: 15px;
+        background: linear-gradient(135deg, #1a365d 0%, #2c5282 100%);
+        color: white;
+        border: none;
+        border-radius: 10px;
+        font-size: 1.1rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s;
+    }
+
+    .btn-submit:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 10px 30px rgba(26, 54, 93, 0.4);
+    }
+
+    .back-link {
+        display: block;
+        text-align: center;
+        margin-top: 20px;
+        color: #718096;
+        text-decoration: none;
+    }
+
+    .back-link:hover {
+        color: #1a365d;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="add-book-page">
+    <div class="add-book-card">
+        <h2><i class="fas fa-plus-circle"></i> Add New Book</h2>
+        <form method="POST" action="{{ url_for('add_book') }}">
+            <div class="form-group">
+                <label for="title">Book Title</label>
+                <input type="text" id="title" name="title" placeholder="Enter book title" required>
+            </div>
+
+            <div class="form-group">
+                <label for="author">Author</label>
+                <input type="text" id="author" name="author" placeholder="Enter author name" required>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="isbn">ISBN</label>
+                    <input type="text" id="isbn" name="isbn" placeholder="978-0-xxx-xxxxx-x" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="category">Category</label>
+                    <select id="category" name="category" required>
+                        <option value="">Select Category</option>
+                        <option value="Computer Science">Computer Science</option>
+                        <option value="Mathematics">Mathematics</option>
+                        <option value="Science">Science</option>
+                        <option value="Language">Language</option>
+                        <option value="Social Studies">Social Studies</option>
+                        <option value="Business">Business</option>
+                        <option value="Criminology">Criminology</option>
+                        <option value="Hospitality">Hospitality</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="description">Description</label>
+                <textarea id="description" name="description" placeholder="Enter book description"></textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="stock">Stock Quantity</label>
+                <input type="number" id="stock" name="stock" value="1" min="0" required>
+            </div>
+
+            <button type="submit" class="btn-submit">
+                <i class="fas fa-save"></i> Add Book
+            </button>
+        </form>
+
+        <a href="{{ url_for('admin') }}" class="back-link">
+            <i class="fas fa-arrow-left"></i> Back to Admin Dashboard
+        </a>
+    </div>
+</div>
+{% endblock %}
