@@ -1,4 +1,5 @@
 from flask import Flask, render_template, request, redirect, url_for, session, flash
+from werkzeug.utils import secure_filename
 from flask_sqlalchemy import SQLAlchemy
 from werkzeug.security import generate_password_hash, check_password_hash
 import os
@@ -9,6 +10,14 @@ app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///elibrary.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 db = SQLAlchemy(app)
+
+# Configure upload folder
+UPLOAD_FOLDER = os.path.join('static', 'uploads')
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024  # 16MB max file size
+
+# Create uploads directory if it doesn't exist
+os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 
 # Database Models
 class User(db.Model):
@@ -256,13 +265,27 @@ def add_book():
         description = request.form.get('description')
         stock = int(request.form.get('stock', 1))
         
+
+        # Handle image upload
+        cover_image = None
+        if 'cover_image' in request.files:
+            file = request.files['cover_image']
+            if file and file.filename:
+                filename = secure_filename(file.filename)
+                # Add timestamp to filename to avoid duplicates
+                import time
+                timestamp = int(time.time())
+                new_filename = f"{timestamp}_{filename}"
+                file.save(os.path.join(app.config['UPLOAD_FOLDER'], new_filename))
+                cover_image = new_filename
         book = Book(
             title=title,
             author=author,
             isbn=isbn,
             category=category,
             description=description,
-            stock=stock
+            stock=stock,
+            cover_image=cover_image
         )
         
         db.session.add(book)
@@ -272,6 +295,27 @@ def add_book():
         return redirect(url_for('admin'))
     
     return render_template('add_book.html', school_name='Torres Capitol College', school_short='TCC')
+
+@app.route('/admin/delete-book/<int:book_id>', methods=['POST'])
+def delete_book(book_id):
+    if 'user_id' not in session or session.get('role') != 'admin':
+        flash('Access denied', 'danger')
+        return redirect(url_for('login'))
+    
+    book = Book.query.get_or_404(book_id)
+    
+    # Delete cover image if exists
+    if book.cover_image:
+        try:
+            os.remove(os.path.join(app.config['UPLOAD_FOLDER'], book.cover_image))
+        except:
+            pass
+    
+    db.session.delete(book)
+    db.session.commit()
+    
+    flash('Book deleted successfully!', 'success')
+    return redirect(url_for('admin'))
 
 # Initialize database
 with app.app_context():
