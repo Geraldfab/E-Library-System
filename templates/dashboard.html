@@ -277,7 +277,11 @@
             {% for book in books[:8] %}
             <div class="book-card">
                 <div class="book-icon">
+                    {% if book.cover_image %}
+                    <img src="{{ url_for('static', filename='uploads/' + book.cover_image) }}" alt="{{ book.title }}" style="width: 100%; height: 100%; object-fit: cover;">
+                    {% else %}
                     <i class="fas fa-book"></i>
+                    {% endif %}
                 </div>
                 <h4>{{ book.title }}</h4>
                 <p>{{ book.author }}</p>

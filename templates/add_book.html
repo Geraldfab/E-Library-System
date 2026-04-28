@@ -103,7 +103,7 @@
 <div class="add-book-page">
     <div class="add-book-card">
         <h2><i class="fas fa-plus-circle"></i> Add New Book</h2>
-        <form method="POST" action="{{ url_for('add_book') }}">
+        <form method="POST" action="{{ url_for('add_book') }}" enctype="multipart/form-data">
             <div class="form-group">
                 <label for="title">Book Title</label>
                 <input type="text" id="title" name="title" placeholder="Enter book title" required>
@@ -144,6 +144,12 @@
             <div class="form-group">
                 <label for="stock">Stock Quantity</label>
                 <input type="number" id="stock" name="stock" value="1" min="0" required>
+            </div>
+
+            <div class="form-group">
+                <label for="cover_image">Book Cover Image (Optional)</label>
+                <input type="file" id="cover_image" name="cover_image" accept="image/*">
+                <small style="color: #718096; display: block; margin-top: 5px;">Supported formats: JPG, PNG, GIF</small>
             </div>
 
             <button type="submit" class="btn-submit">
