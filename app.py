@@ -341,6 +341,19 @@ def delete_book(book_id):
     flash('Book deleted successfully!', 'success')
     return redirect(url_for('admin'))
 
+@app.route('/read-ebook/<int:book_id>')
+def read_ebook(book_id):
+    book = Book.query.get_or_404(book_id)
+    
+    if not book.ebook_file:
+        flash('No e-book file available for this book', 'warning')
+        return redirect(url_for('library'))
+    
+    return render_template('reader.html', 
+                       book=book,
+                       school_name='Torres Capitol College',
+                       school_short='TCC')
+
 # Initialize database
 with app.app_context():
     db.create_all()
@@ -392,14 +405,3 @@ if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0', port=5000)
 
 @app.route('/read-ebook/<int:book_id>')
-def read_ebook(book_id):
-    book = Book.query.get_or_404(book_id)
-    
-    if not book.ebook_file:
-        flash('No e-book file available for this book', 'warning')
-        return redirect(url_for('library'))
-    
-    return render_template('reader.html', 
-                       book=book,
-                       school_name='Torres Capitol College',
-                       school_short='TCC')
