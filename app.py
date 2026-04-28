@@ -357,17 +357,6 @@ def read_ebook(book_id):
 # Initialize database
 with app.app_context():
     db.create_all()
-
-    # Add ebook_file column if it does not exist (migration for existing databases)
-    try:
-        from sqlalchemy import inspect
-        inspector = inspect(db.engine)
-        columns = [col['name'] for col in inspector.get_columns('book')]
-        if 'ebook_file' not in columns:
-            db.session.execute(db.text('ALTER TABLE book ADD COLUMN ebook_file VARCHAR(200)'))
-            db.session.commit()
-    except:
-        pass
     
     # Create admin user if not exists
     admin_user = User.query.filter_by(username='admin').first()
