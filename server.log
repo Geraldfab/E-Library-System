@@ -8,4 +8,4 @@
  * Restarting with stat
  * Debugger is active!
  * Debugger PIN: 105-060-973
-127.0.0.1 - - [28/Apr/2026 06:34:06] "[32mGET / HTTP/1.1[0m" 302 -
+127.0.0.1 - - [28/Apr/2026 06:40:50] "GET /login HTTP/1.1" 200 -
