@@ -19,7 +19,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const wrapper = input.parentElement;
         const toggleBtn = document.createElement('i');
         toggleBtn.className = 'fas fa-eye password-toggle';
-        toggleBtn.style.cssText = 'position: absolute; right: 15px; top: 50%; transform: translateY(-50%); cursor: pointer; color: #a0aec0;';
+        toggleBtn.style.cssText = 'position: absolute; right: 15px; top: 50%; transform: translateY(-50%); cursor: pointer; color: #a0aec0; z-index: 2;';
         
         toggleBtn.addEventListener('click', function() {
             if (input.type === 'password') {
