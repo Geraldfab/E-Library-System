@@ -1,0 +1,244 @@
+{% extends "base.html" %}
+
+{% block title %}Sign Up{% endblock %}
+
+{% block extra_css %}
+<style>
+    .signup-page {
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: linear-gradient(135deg, #212121 0%, #616060 50%, #212121 100%);
+        padding: 20px;
+    }
+
+    .signup-container {
+        width: 100%;
+        max-width: 500px;
+    }
+
+    .signup-header {
+        text-align: center;
+        margin-bottom: 30px;
+    }
+
+    .signup-logo {
+        width: 100px;
+        height: 100px;
+        background: white;
+        border-radius: 50%;
+        padding: 12px;
+        margin: 0 auto 20px;
+        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+    }
+
+    .signup-logo img {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+    }
+
+    .signup-header h2 {
+        color: white;
+        font-size: 2rem;
+        margin-bottom: 10px;
+        font-weight: 700;
+    }
+
+    .signup-header p {
+        color: rgba(255, 255, 255, 0.8);
+        font-size: 1rem;
+    }
+
+    .signup-card {
+        background: white;
+        border-radius: 20px;
+        padding: 40px;
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+    }
+
+    .signup-card h3 {
+        text-align: center;
+        color: #212121;
+        margin-bottom: 30px;
+        font-size: 1.5rem;
+    }
+
+    .form-group {
+        margin-bottom: 20px;
+    }
+
+    .form-group label {
+        display: block;
+        margin-bottom: 8px;
+        color: #2d3748;
+        font-weight: 500;
+    }
+
+    .form-group .input-wrapper {
+        position: relative;
+    }
+
+    .form-group .input-wrapper > i:not(.password-toggle) {
+        position: absolute;
+        left: 15px;
+        top: 50%;
+        transform: translateY(-50%);
+        color: #a0aec0;
+        z-index: 1;
+    }
+
+    .form-group input {
+        width: 100%;
+        padding: 14px 45px 14px 45px;
+        border: 2px solid #e2e8f0;
+        border-radius: 10px;
+        font-size: 1rem;
+        transition: all 0.3s;
+    }
+
+    .form-group input:focus {
+        outline: none;
+        border-color: #616060;
+        box-shadow: 0 0 0 3px rgba(97, 96, 96, 0.1);
+    }
+
+    .form-row {
+        display: flex;
+        gap: 15px;
+    }
+
+    .form-row .form-group {
+        flex: 1;
+    }
+
+    .btn-signup {
+        width: 100%;
+        padding: 15px;
+        background: linear-gradient(135deg, #212121 0%, #616060 100%);
+        color: white;
+        border: none;
+        border-radius: 10px;
+        font-size: 1.1rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s;
+        margin-top: 10px;
+    }
+
+    .btn-signup:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 10px 30px rgba(33, 33, 33, 0.4);
+    }
+
+    .signup-footer {
+        text-align: center;
+        margin-top: 25px;
+        color: #4a5568;
+    }
+
+    .signup-footer a {
+        color: #616060;
+        font-weight: 600;
+        text-decoration: none;
+    }
+
+    .signup-footer a:hover {
+        text-decoration: underline;
+    }
+
+    .school-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        background: rgba(255, 255, 255, 0.1);
+        padding: 10px 20px;
+        border-radius: 50px;
+        margin-top: 20px;
+    }
+
+    .school-badge img {
+        width: 30px;
+        height: 30px;
+    }
+
+    .school-badge span {
+        color: white;
+        font-weight: 500;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="signup-page">
+    <div class="signup-container">
+        <div class="signup-header">
+            <div class="signup-logo">
+                <img src="{{ url_for('static', filename='images/tcc_logo.png') }}" alt="{{ school_short }} Logo">
+            </div>
+            <h2>Create Account</h2>
+            <p>Join {{ school_name }} E-Library</p>
+            <div class="school-badge">
+                <img src="{{ url_for('static', filename='images/tcc_logo.png') }}" alt="TCC">
+                <span>Torres Capitol College</span>
+            </div>
+        </div>
+
+        <div class="signup-card">
+            <h3>Student Registration</h3>
+            <form method="POST" action="{{ url_for('signup') }}">
+                <div class="form-group">
+                    <label for="full_name">Full Name</label>
+                    <div class="input-wrapper">
+                        <i class="fas fa-user"></i>
+                        <input type="text" id="full_name" name="full_name" placeholder="Enter your full name" required>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="username">Username</label>
+                    <div class="input-wrapper">
+                        <i class="fas fa-at"></i>
+                        <input type="text" id="username" name="username" placeholder="Choose a username" required>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="email">Email Address</label>
+                    <div class="input-wrapper">
+                        <i class="fas fa-envelope"></i>
+                        <input type="email" id="email" name="email" placeholder="Enter your email" required>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="password">Password</label>
+                        <div class="input-wrapper">
+                            <i class="fas fa-lock"></i>
+                            <input type="password" id="password" name="password" placeholder="Create password" required>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="confirm_password">Confirm Password</label>
+                        <div class="input-wrapper">
+                            <i class="fas fa-lock"></i>
+                            <input type="password" id="confirm_password" name="confirm_password" placeholder="Confirm password" required>
+                        </div>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn-signup">
+                    <i class="fas fa-user-plus"></i> Create Account
+                </button>
+            </form>
+
+            <div class="signup-footer">
+                <p>Already have an account? <a href="{{ url_for('login') }}">Login Now</a></p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
