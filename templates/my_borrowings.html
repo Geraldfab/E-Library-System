@@ -153,6 +153,23 @@
         box-shadow: 0 5px 20px rgba(56, 161, 105, 0.4);
     }
 
+    .borrowing-card .btn-read {
+        padding: 12px 25px;
+        background: linear-gradient(135deg, #3182ce 0%, #4299e1 100%);
+        color: white;
+        border: none;
+        border-radius: 8px;
+        font-weight: 600;
+        cursor: pointer;
+        text-decoration: none;
+        transition: all 0.3s;
+    }
+
+    .borrowing-card .btn-read:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 5px 20px rgba(66, 153, 225, 0.4);
+    }
+
     .empty-state {
         text-align: center;
         padding: 80px 20px;
@@ -224,6 +241,11 @@
             <span class="status-badge borrowed">
                 <i class="fas fa-clock"></i> Borrowed
             </span>
+            {% if borrowing.book.ebook_file %}
+            <a href="{{ url_for('read_book', book_id=borrowing.book.id) }}" class="btn-read">
+                <i class="fas fa-book-reader"></i> Read
+            </a>
+            {% endif %}
             <a href="{{ url_for('return_book', borrowing_id=borrowing.id) }}" class="btn-return">
                 <i class="fas fa-undo"></i> Return
             </a>

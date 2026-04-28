@@ -37,6 +37,7 @@ class Book(db.Model):
     category = db.Column(db.String(100))
     description = db.Column(db.Text)
     cover_image = db.Column(db.String(200))
+    ebook_file = db.Column(db.String(200))
     stock = db.Column(db.Integer, default=1)
     created_at = db.Column(db.DateTime, default=db.func.current_timestamp())
 
@@ -225,6 +226,34 @@ def return_book(borrowing_id):
     flash('Book returned successfully!', 'success')
     return redirect(url_for('my_borrowings'))
 
+@app.route('/read/<int:book_id>')
+def read_book(book_id):
+    if 'user_id' not in session:
+        return redirect(url_for('login'))
+    
+    book = Book.query.get(book_id)
+    if not book or not book.ebook_file:
+        flash('E-book not available', 'danger')
+        return redirect(url_for('my_borrowings'))
+    
+    # Check if user has borrowed this book (and hasn't returned it)
+    borrowing = Borrowing.query.filter_by(
+        user_id=session['user_id'], 
+        book_id=book_id, 
+        status='borrowed'
+    ).first()
+    
+    if not borrowing:
+        flash('You must borrow this book first to read it', 'warning')
+        return redirect(url_for('my_borrowings'))
+    
+    return render_template(
+        'ebook_reader.html', 
+        book=book,
+        school_name='Torres Capitol College',
+        school_short='TCC'
+    )
+
 @app.route('/logout')
 def logout():
     session.clear()
@@ -265,19 +294,30 @@ def add_book():
         description = request.form.get('description')
         stock = int(request.form.get('stock', 1))
         
-
         # Handle image upload
         cover_image = None
         if 'cover_image' in request.files:
             file = request.files['cover_image']
             if file and file.filename:
                 filename = secure_filename(file.filename)
-                # Add timestamp to filename to avoid duplicates
                 import time
                 timestamp = int(time.time())
                 new_filename = f"{timestamp}_{filename}"
                 file.save(os.path.join(app.config['UPLOAD_FOLDER'], new_filename))
                 cover_image = new_filename
+        
+        # Handle e-book upload
+        ebook_file = None
+        if 'ebook_file' in request.files:
+            file = request.files['ebook_file']
+            if file and file.filename:
+                filename = secure_filename(file.filename)
+                import time
+                timestamp = int(time.time())
+                new_filename = f"ebook_{timestamp}_{filename}"
+                file.save(os.path.join(app.config['UPLOAD_FOLDER'], new_filename))
+                ebook_file = new_filename
+        
         book = Book(
             title=title,
             author=author,
@@ -285,7 +325,8 @@ def add_book():
             category=category,
             description=description,
             stock=stock,
-            cover_image=cover_image
+            cover_image=cover_image,
+            ebook_file=ebook_file
         )
         
         db.session.add(book)
@@ -308,6 +349,13 @@ def delete_book(book_id):
     if book.cover_image:
         try:
             os.remove(os.path.join(app.config['UPLOAD_FOLDER'], book.cover_image))
+        except:
+            pass
+    
+    # Delete e-book file if exists
+    if book.ebook_file:
+        try:
+            os.remove(os.path.join(app.config['UPLOAD_FOLDER'], book.ebook_file))
         except:
             pass
     

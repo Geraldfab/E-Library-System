@@ -1,0 +1,162 @@
+{% extends "base.html" %}
+
+{% block title %}Read {{ book.title }}{% endblock %}
+
+{% block extra_css %}
+<style>
+    .ebook-reader-container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 20px;
+    }
+
+    .reader-header {
+        background: linear-gradient(135deg, #212121 0%, #616060 100%);
+        border-radius: 15px;
+        padding: 25px;
+        color: white;
+        margin-bottom: 20px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .reader-header h1 {
+        font-size: 1.5rem;
+        margin-bottom: 5px;
+    }
+
+    .reader-header .book-author {
+        font-size: 1rem;
+        opacity: 0.9;
+    }
+
+    .btn-back {
+        padding: 12px 25px;
+        background: white;
+        color: #212121;
+        border: none;
+        border-radius: 8px;
+        font-weight: 600;
+        cursor: pointer;
+        text-decoration: none;
+        transition: all 0.3s;
+    }
+
+    .btn-back:hover {
+        background: #f0f0f0;
+        transform: translateY(-2px);
+    }
+
+    .ebook-frame {
+        background: #333;
+        border-radius: 15px;
+        overflow: hidden;
+        min-height: 700px;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .ebook-toolbar {
+        background: #2d2d2d;
+        padding: 15px 20px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border-bottom: 1px solid #444;
+    }
+
+    .ebook-toolbar .file-info {
+        color: #aaa;
+        font-size: 0.9rem;
+    }
+
+    .ebook-toolbar .file-info i {
+        margin-right: 8px;
+    }
+
+    .btn-download {
+        padding: 10px 20px;
+        background: #616060;
+        color: white;
+        border: none;
+        border-radius: 6px;
+        font-weight: 500;
+        cursor: pointer;
+        text-decoration: none;
+        transition: all 0.3s;
+    }
+
+    .btn-download:hover {
+        background: #4a4a4a;
+    }
+
+    .ebook-content {
+        flex: 1;
+        display: flex;
+        justify-content: center;
+        align-items: flex-start;
+        overflow: auto;
+        padding: 20px;
+    }
+
+    .ebook-content iframe,
+    .ebook-content embed {
+        width: 100%;
+        height: 800px;
+        border: none;
+        background: white;
+        border-radius: 8px;
+    }
+
+    .no-ebook {
+        text-align: center;
+        padding: 60px;
+        background: white;
+        border-radius: 15px;
+    }
+
+    .no-ebook i {
+        font-size: 4rem;
+        color: #e53e3e;
+        margin-bottom: 20px;
+    }
+
+    .no-ebook h3 {
+        color: #212121;
+        margin-bottom: 10px;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="ebook-reader-container">
+    <div class="reader-header">
+        <div>
+            <h1><i class="fas fa-book-reader"></i> {{ book.title }}</h1>
+            <p class="book-author">by {{ book.author }}</p>
+        </div>
+        <a href="{{ url_for('my_borrowings') }}" class="btn-back">
+            <i class="fas fa-arrow-left"></i> Back to Borrowings
+        </a>
+    </div>
+
+    <div class="ebook-frame">
+        <div class="ebook-toolbar">
+            <span class="file-info">
+                <i class="fas fa-file-pdf"></i> {{ book.ebook_file }}
+            </span>
+            <a href="{{ url_for('static', filename='uploads/' + book.ebook_file) }}" class="btn-download" download>
+                <i class="fas fa-download"></i> Download
+            </a>
+        </div>
+        <div class="ebook-content">
+            {% if book.ebook_file.endswith('.pdf') %}
+            <iframe src="{{ url_for('static', filename='uploads/' + book.ebook_file) }}" type="application/pdf"></iframe>
+            {% else %}
+            <iframe src="{{ url_for('static', filename='uploads/' + book.ebook_file) }}"></iframe>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}
