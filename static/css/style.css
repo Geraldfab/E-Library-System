@@ -15,7 +15,7 @@ body {
 
 /* Header Styles */
 .main-header {
-    background: linear-gradient(135deg, #1a365d 0%, #2c5282 100%);
+    background: linear-gradient(135deg, #616060 0%, #616060 100%);
     padding: 0;
     box-shadow: 0 4px 20px rgba(26, 54, 93, 0.3);
     position: sticky;
@@ -147,13 +147,13 @@ body {
 
 .alert-info {
     background: #bee3f8;
-    color: #2c5282;
-    border-left: 4px solid #3182ce;
+    color: #616060;
+    border-left: 4px solid #616060;
 }
 
 /* Footer Styles */
 .main-footer {
-    background: #1a365d;
+    background: #616060;
     color: white;
     padding: 40px 0 0;
     margin-top: auto;
@@ -266,12 +266,12 @@ body {
 }
 
 ::-webkit-scrollbar-thumb {
-    background: #1a365d;
+    background: #616060;
     border-radius: 5px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-    #2c5282;
+    #616060;
 }
 
 /* Animation Classes */
@@ -292,7 +292,7 @@ body {
 .btn {
     display: inline-block;
     padding: 12px 25px;
-    background: linear-gradient(135deg, #1a365d 0%, #2c5282 100%);
+    background: linear-gradient(135deg, #616060 0%, #616060 100%);
     color: white;
     border: none;
     border-radius: 10px;
