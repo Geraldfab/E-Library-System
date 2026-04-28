@@ -259,6 +259,11 @@
             <span class="category">{{ book.category }}</span>
             <p class="description">{{ book.description }}</p>
             <div class="actions">
+                {% if book.ebook_file %}
+                <a href="{{ url_for('read_ebook', book_id=book.id) }}" class="btn-borrow" style="background: #616060;">
+                    <i class="fas fa-book-reader"></i> Read E-Book
+                </a>
+                {% endif %}
                 <span class="stock {% if book.stock > 0 %}available{% else %}unavailable{% endif %}">
                     <i class="fas fa-box"></i> {{ book.stock }} available
                 </span>

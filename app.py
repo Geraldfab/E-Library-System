@@ -37,6 +37,7 @@ class Book(db.Model):
     category = db.Column(db.String(100))
     description = db.Column(db.Text)
     cover_image = db.Column(db.String(200))
+    ebook_file = db.Column(db.String(200))
     stock = db.Column(db.Integer, default=1)
     created_at = db.Column(db.DateTime, default=db.func.current_timestamp())
 
@@ -278,6 +279,21 @@ def add_book():
                 new_filename = f"{timestamp}_{filename}"
                 file.save(os.path.join(app.config['UPLOAD_FOLDER'], new_filename))
                 cover_image = new_filename
+        
+        # Handle ebook upload
+        ebook_file = None
+        if 'ebook_file' in request.files:
+            file = request.files['ebook_file']
+            if file and file.filename:
+                filename = secure_filename(file.filename)
+                import time
+                timestamp = int(time.time())
+                new_filename = f"{timestamp}_{filename}"
+                # Save to uploads/ebooks subfolder
+                os.makedirs(os.path.join(app.config['UPLOAD_FOLDER'], 'ebooks'), exist_ok=True)
+                file.save(os.path.join(app.config['UPLOAD_FOLDER'], 'ebooks', new_filename))
+                ebook_file = new_filename
+        
         book = Book(
             title=title,
             author=author,
@@ -285,7 +301,8 @@ def add_book():
             category=category,
             description=description,
             stock=stock,
-            cover_image=cover_image
+            cover_image=cover_image,
+            ebook_file=ebook_file
         )
         
         db.session.add(book)
@@ -308,6 +325,13 @@ def delete_book(book_id):
     if book.cover_image:
         try:
             os.remove(os.path.join(app.config['UPLOAD_FOLDER'], book.cover_image))
+        except:
+            pass
+    
+    # Delete ebook file if exists
+    if book.ebook_file:
+        try:
+            os.remove(os.path.join(app.config['UPLOAD_FOLDER'], 'ebooks', book.ebook_file))
         except:
             pass
     
@@ -355,3 +379,16 @@ with app.app_context():
 
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0', port=5000)
+
+@app.route('/read-ebook/<int:book_id>')
+def read_ebook(book_id):
+    book = Book.query.get_or_404(book_id)
+    
+    if not book.ebook_file:
+        flash('No e-book file available for this book', 'warning')
+        return redirect(url_for('library'))
+    
+    return render_template('reader.html', 
+                       book=book,
+                       school_name='Torres Capitol College',
+                       school_short='TCC')
