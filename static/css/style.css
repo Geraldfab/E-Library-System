@@ -15,9 +15,9 @@ body {
 
 /* Header Styles */
 .main-header {
-    background: linear-gradient(135deg, #1a365d 0%, #2c5282 100%);
+    background: linear-gradient(135deg, #212121 0%, #616060 100%);
     padding: 0;
-    box-shadow: 0 4px 20px rgba(26, 54, 93, 0.3);
+    box-shadow: 0 4px 20px rgba(33, 33, 33, 0.3);
     position: sticky;
     top: 0;
     z-index: 1000;
@@ -144,14 +144,14 @@ body {
 }
 
 .alert-info {
-    background: #bee3f8;
-    color: #2c5282;
-    border-left: 4px solid #3182ce;
+    background: #e0e0e0;
+    color: #424242;
+    border-left: 4px solid #616060;
 }
 
-/* Footer Styles */
+/* Main Footer Styles */
 .main-footer {
-    background: #1a365d;
+    background: #212121;
     color: white;
     padding: 40px 0 0;
     margin-top: auto;
@@ -264,12 +264,12 @@ body {
 }
 
 ::-webkit-scrollbar-thumb {
-    background: #1a365d;
+    background: #212121;
     border-radius: 5px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-    #2c5282;
+    #616060;
 }
 
 /* Animation Classes */
@@ -290,7 +290,7 @@ body {
 .btn {
     display: inline-block;
     padding: 12px 25px;
-    background: linear-gradient(135deg, #1a365d 0%, #2c5282 100%);
+    background: linear-gradient(135deg, #212121 0%, #616060 100%);
     color: white;
     border: none;
     border-radius: 10px;
@@ -302,7 +302,7 @@ body {
 
 .btn:hover {
     transform: translateY(-2px);
-    box-shadow: 0 5px 20px rgba(26, 54, 93, 0.4);
+    box-shadow: 0 5px 20px rgba(33, 33, 33, 0.4);
 }
 
 .btn-secondary {
